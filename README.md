@@ -36,20 +36,20 @@ sudo apt install nginx
 10.
 sudo nano /etc/nginx/sites-available/yourproject
 
-'''
-server {
-    listen 80;
-    server_name localhost;
 
-    location / {
-        proxy_pass http://127.0.0.1:8000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
+    server {
+        listen 80;
+        server_name localhost;
+    
+        location / {
+            proxy_pass http://127.0.0.1:8000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
     }
-}
-'''
+
 
 11.
 sudo ln -s /etc/nginx/sites-available/yourproject /etc/nginx/sites-enabled
@@ -60,35 +60,35 @@ sudo systemctl restart nginx
 
 1.
 # settings.py
-
-import os
-from pathlib import Path
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-STATIC_URL = '/static/'
-
-
-STATIC_ROOT = BASE_DIR / "staticfiles"
-
-
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / "media"
+    
+    import os
+    from pathlib import Path
+    
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    
+    
+    STATIC_URL = '/static/'
+    
+    
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+    
+    
+    STATICFILES_DIRS = [
+        BASE_DIR / "static",
+    ]
+    
+    
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / "media"
 
 2.
 #urls.py
-from django.conf import settings
-from django.conf.urls.static import static
-
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    from django.conf import settings
+    from django.conf.urls.static import static
+    
+    if settings.DEBUG:
+        urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 3.
 python manage.py collectstatic
@@ -105,28 +105,31 @@ sudo mv mkcert /usr/local/bin/
 mkcert -install  
 mkcert localhost 127.0.0.1 ::1  (mkcert 192.168.1.100)
 
-3.
+3. 
 '''
-server {
-    listen 443 ssl;
-    server_name localhost;
 
-    ssl_certificate /path/to/localhost.pem;
-    ssl_certificate_key /path/to/localhost-key.pem;
-
-    location / {
-        proxy_pass http://127.0.0.1:8000;
-        proxy_set_header Host $host;
+     server{
+        listen 443 ssl;
+        server_name localhost;
+    
+        ssl_certificate /path/to/localhost.pem;
+        ssl_certificate_key /path/to/localhost-key.pem;
+    
+        location / {
+            proxy_pass http://127.0.0.1:8000;
+            proxy_set_header Host $host;
+        }
     }
-}
+    
+    server {
 
-server {
-    listen 80;
-    server_name localhost;
-    return 301 https://$host$request_uri;
-}
+        listen 80;
+        server_name localhost;
+        return 301 https://$host$request_uri;
+
+    }
 '''
-4.
+4. 
 sudo nginx -t && sudo systemctl restart nginx
 
 5.
