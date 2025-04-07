@@ -36,6 +36,7 @@ sudo apt install nginx
 10.
 sudo nano /etc/nginx/sites-available/yourproject
 
+'''
 server {
     listen 80;
     server_name localhost;
@@ -48,6 +49,7 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
+'''
 
 11.
 sudo ln -s /etc/nginx/sites-available/yourproject /etc/nginx/sites-enabled
@@ -104,7 +106,7 @@ mkcert -install
 mkcert localhost 127.0.0.1 ::1  (mkcert 192.168.1.100)
 
 3.
-
+'''
 server {
     listen 443 ssl;
     server_name localhost;
@@ -123,7 +125,7 @@ server {
     server_name localhost;
     return 301 https://$host$request_uri;
 }
-
+'''
 4.
 sudo nginx -t && sudo systemctl restart nginx
 
