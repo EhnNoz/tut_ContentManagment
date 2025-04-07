@@ -91,6 +91,44 @@ if settings.DEBUG:
 3.
 python manage.py collectstatic
 
+# Https for localhost
+
+1.
+sudo apt install libnss3-tools
+curl -sSL https://github.com/FiloSottile/mkcert/releases/download/v1.4.4/mkcert-v1.4.4-linux-amd64 -o mkcert
+chmod +x mkcert
+sudo mv mkcert /usr/local/bin/
+
+2.
+mkcert -install  
+mkcert localhost 127.0.0.1 ::1  (mkcert 192.168.1.100)
+
+3.
+server {
+    listen 443 ssl;
+    server_name localhost;
+
+    ssl_certificate /path/to/localhost.pem;
+    ssl_certificate_key /path/to/localhost-key.pem;
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+    }
+}
+
+server {
+    listen 80;
+    server_name localhost;
+    return 301 https://$host$request_uri;
+}
+
+4.
+sudo nginx -t && sudo systemctl restart nginx
+
+5.
+gunicorn yourproject.wsgi:application --bind 0.0.0.0:8000
+
 
 
 
