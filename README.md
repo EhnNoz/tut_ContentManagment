@@ -104,6 +104,7 @@ mkcert -install
 mkcert localhost 127.0.0.1 ::1  (mkcert 192.168.1.100)
 
 3.
+
 server {
     listen 443 ssl;
     server_name localhost;
