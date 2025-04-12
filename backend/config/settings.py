@@ -179,3 +179,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'irib.datamining@gmail.com'  # Your Gmail address
 EMAIL_HOST_PASSWORD = 'clvo xznz xdbn rjiz'  # Your Gmail app password (not your regular password)
+#CSRF_COOKIE_SECURE = True  # For HTTPS
+#CSRF_COOKIE_HTTPONLY = True
+#CSRF_TRUSTED_ORIGINS = ['https://192.168.81.129']
